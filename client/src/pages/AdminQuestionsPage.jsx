@@ -49,8 +49,13 @@ export default function AdminQuestionsPage() {
       difficulty: q.difficulty,
       options: q.options.map((o) => ({ text: o.text, is_correct: o.is_correct })),
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast.info(`Po modifikon pyetjen #${q.id}`);
   }
-  function startNew() { setEditing(EMPTY_Q()); }
+  function startNew() {
+    setEditing(EMPTY_Q());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   function updateOption(i, patch) {
     setEditing((prev) => ({
@@ -140,8 +145,10 @@ export default function AdminQuestionsPage() {
       <h2>Menaxho Pyetjet</h2>
       {error && <div className="alert">{error}</div>}
 
-      <form className="card form" onSubmit={save}>
-        <h3>{editing.id ? `Modifiko pyetjen #${editing.id}` : 'Shto pyetje te re'}</h3>
+      <form className={`card form ${editing.id ? 'editing-mode' : ''}`} onSubmit={save}>
+        <h3>
+          {editing.id ? <>✏️ Modifiko pyetjen #{editing.id}</> : '+ Shto pyetje te re'}
+        </h3>
         <label>
           Kategoria
           <select

@@ -222,6 +222,13 @@
 .qlist-actions { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
 
 /* Question form */
+.editing-mode {
+  border-color: var(--primary) !important;
+  border-width: 2px !important;
+  background: linear-gradient(180deg, var(--primary-bg), transparent 30%);
+}
+.editing-mode h3 { color: var(--primary); }
+
 .opts-edit {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -498,9 +505,18 @@
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  .navbar-inner { flex-wrap: wrap; gap: 0.5rem; }
+  .nav-links { order: 3; width: 100%; padding: 0.3rem 0 0; }
+  .who { display: none; }
+  .nav-dropdown-menu { left: auto; right: 0; }
+}
 @media (max-width: 640px) {
-  .navbar-inner { flex-wrap: wrap; gap: 0.6rem; }
-  .nav-links { order: 3; width: 100%; overflow-x: auto; }
   .quiz-header { flex-direction: column; align-items: stretch; gap: 0.6rem; }
   .table th:nth-child(3), .table td:nth-child(3) { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  .bar-chart { height: 160px; }
+  .filter-row { flex-direction: column; }
 }
