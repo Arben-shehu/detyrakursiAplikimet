@@ -16,16 +16,25 @@ const app = express();
 // CORS: lejo nje liste URL-ash te ndarura me presje ne CLIENT_ORIGIN.
 // Per development: http://localhost:5173
 // Per produksion: https://your-app.vercel.app,https://your-other-domain.com
+// Normalizon trailing slashes per matching me te forte.
+function normalize(o) { return (o || '').replace(/\/+$/, '').toLowerCase(); }
+
 const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
   .split(',')
-  .map((s) => s.trim())
+  .map((s) => normalize(s.trim()))
   .filter(Boolean);
+
+console.log('[cors] Lejuar:', allowedOrigins);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Lejo kerkesa pa origin (curl, healthcheck) ose ato te lejuara
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error(`CORS: origin "${origin}" nuk eshte i lejuar`));
+    // Lejo kerkesa pa origin (curl, healthcheck) ose te perputhura
+    if (!origin || allowedOrigins.includes(normalize(origin))) {
+      return callback(null, true);
+    }
+    // Mos hidh gabim - kthe false qe mos te dale 500
+    console.warn('[cors] Refuzuar origin:', origin);
+    return callback(null, false);
   },
   credentials: false,
 }));
