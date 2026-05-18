@@ -13,8 +13,20 @@ const analyticsRoutes = require('./routes/analytics.routes');
 
 const app = express();
 
+// CORS: lejo nje liste URL-ash te ndarura me presje ne CLIENT_ORIGIN.
+// Per development: http://localhost:5173
+// Per produksion: https://your-app.vercel.app,https://your-other-domain.com
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Lejo kerkesa pa origin (curl, healthcheck) ose ato te lejuara
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS: origin "${origin}" nuk eshte i lejuar`));
+  },
   credentials: false,
 }));
 

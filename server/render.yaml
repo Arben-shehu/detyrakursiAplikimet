@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: iq-tester-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 4000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DATABASE_URL
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: QUIZ_QUESTIONS_PER_ATTEMPT
+        value: 20
+      - key: QUIZ_TIME_LIMIT_MINUTES
+        value: 15

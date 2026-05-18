@@ -1,8 +1,13 @@
 // Wrapper i thjeshte mbi fetch:
 //  - shton automatikisht Authorization header nese ka token
+//  - prefixon URL-ne me VITE_API_URL (per produksion) ose perdor proxy-n e Vite-s (dev)
 //  - kthen JSON ose hedh nje Error me mesazhin nga server-i
 
 const TOKEN_KEY = 'iq_tester_token';
+
+// Ne dev, VITE_API_URL eshte i pacaktuar dhe perdoret proxy-i te /api.
+// Ne prod (Vercel), vendoset si env var, p.sh. https://iq-tester-api.onrender.com
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -17,7 +22,9 @@ async function request(method, path, body) {
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(path, {
+  const url = path.startsWith('/api') && API_BASE ? `${API_BASE}${path}` : path;
+
+  const res = await fetch(url, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
