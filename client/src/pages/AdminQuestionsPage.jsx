@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api/client';
 import Modal from '../components/Modal';
+import Breadcrumbs from '../components/Breadcrumbs';
+import { useToast } from '../toast/ToastContext';
 
 const EMPTY_OPT = () => ({ text: '', is_correct: false });
 const EMPTY_Q = () => ({
@@ -11,13 +13,19 @@ const EMPTY_Q = () => ({
   options: [EMPTY_OPT(), EMPTY_OPT(), EMPTY_OPT(), EMPTY_OPT()],
 });
 
+const PAGE_SIZE = 10;
+
 export default function AdminQuestionsPage() {
+  const toast = useToast();
   const [questions, setQuestions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [editing, setEditing] = useState(EMPTY_Q());
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [confirmDel, setConfirmDel] = useState(null);
+  const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [page, setPage] = useState(1);
 
   async function load() {
     try {
@@ -69,7 +77,7 @@ export default function AdminQuestionsPage() {
     e.preventDefault();
     setError('');
     if (!editing.options.some((o) => o.is_correct)) {
-      setError('Zgjidh nje opsion si te sakte');
+      toast.error('Zgjidh nje opsion si te sakte');
       return;
     }
     setBusy(true);
@@ -80,12 +88,17 @@ export default function AdminQuestionsPage() {
         difficulty: Number(editing.difficulty) || 1,
         options: editing.options.map((o) => ({ text: o.text, is_correct: !!o.is_correct })),
       };
-      if (editing.id) await api.put(`/api/questions/${editing.id}`, body);
-      else await api.post('/api/questions', body);
+      if (editing.id) {
+        await api.put(`/api/questions/${editing.id}`, body);
+        toast.success(`Pyetja u perditesua`);
+      } else {
+        await api.post('/api/questions', body);
+        toast.success(`Pyetja u shtua`);
+      }
       setEditing(EMPTY_Q());
       load();
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setBusy(false);
     }
@@ -96,14 +109,34 @@ export default function AdminQuestionsPage() {
     setConfirmDel(null);
     try {
       await api.del(`/api/questions/${id}`);
+      toast.success('Pyetja u fshi');
       load();
     } catch (e) {
-      setError(e.message);
+      toast.error(e.message);
     }
   }
 
+  // Filter + paginate
+  const filtered = useMemo(() => {
+    const s = search.trim().toLowerCase();
+    return questions.filter((q) => {
+      if (categoryFilter && String(q.category_id) !== String(categoryFilter)) return false;
+      if (s && !q.text.toLowerCase().includes(s)) return false;
+      return true;
+    });
+  }, [questions, search, categoryFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
   return (
     <section>
+      <Breadcrumbs items={[
+        { label: 'Kreu', to: '/' },
+        { label: 'Admin' },
+        { label: 'Pyetjet' },
+      ]} />
       <h2>Menaxho Pyetjet</h2>
       {error && <div className="alert">{error}</div>}
 
@@ -171,9 +204,22 @@ export default function AdminQuestionsPage() {
         </div>
       </form>
 
-      <h3>Lista e pyetjeve ({questions.length})</h3>
+      <h3>Lista e pyetjeve ({filtered.length} / {questions.length})</h3>
+      <div className="filter-row">
+        <input
+          type="search"
+          placeholder="🔍 Kerko ne pyetje..."
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+        />
+        <select value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}>
+          <option value="">Te gjitha kategorite</option>
+          {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+      </div>
+
       <ul className="qlist">
-        {questions.map((q) => (
+        {paged.map((q) => (
           <li key={q.id} className="qlist-item">
             <div className="qlist-head">
               <span className="qcat">{q.category_name}</span>
@@ -194,6 +240,26 @@ export default function AdminQuestionsPage() {
           </li>
         ))}
       </ul>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button className="btn btn-ghost" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
+            &larr; Prapa
+          </button>
+          <span className="page-info">Faqja {currentPage} / {totalPages}</span>
+          <button className="btn btn-ghost" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>
+            Tjetra &rarr;
+          </button>
+        </div>
+      )}
+
+      {filtered.length === 0 && (
+        <div className="empty-state">
+          <div className="empty-icon">🔍</div>
+          <h3>Asnje pyetje s'perputhet</h3>
+          <p className="muted">Provo te ndryshosh kerkimin ose filterin.</p>
+        </div>
+      )}
 
       <Modal
         open={!!confirmDel}

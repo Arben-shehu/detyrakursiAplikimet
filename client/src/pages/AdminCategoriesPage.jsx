@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import Modal from '../components/Modal';
+import Breadcrumbs from '../components/Breadcrumbs';
+import { useToast } from '../toast/ToastContext';
 
 const EMPTY = { id: null, name: '', description: '' };
 
 export default function AdminCategoriesPage() {
+  const toast = useToast();
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(EMPTY);
   const [busy, setBusy] = useState(false);
@@ -30,30 +33,41 @@ export default function AdminCategoriesPage() {
     setBusy(true);
     try {
       const body = { name: editing.name, description: editing.description };
-      if (editing.id) await api.put(`/api/categories/${editing.id}`, body);
-      else await api.post('/api/categories', body);
+      if (editing.id) {
+        await api.put(`/api/categories/${editing.id}`, body);
+        toast.success(`Kategoria "${body.name}" u perditesua`);
+      } else {
+        await api.post('/api/categories', body);
+        toast.success(`Kategoria "${body.name}" u shtua`);
+      }
       setEditing(EMPTY);
       load();
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setBusy(false);
     }
   }
 
   async function doDelete() {
-    const id = confirmDel.id;
+    const { id, name } = confirmDel;
     setConfirmDel(null);
     try {
       await api.del(`/api/categories/${id}`);
+      toast.success(`Kategoria "${name}" u fshi`);
       load();
     } catch (e) {
-      setError(e.message);
+      toast.error(e.message);
     }
   }
 
   return (
     <section>
+      <Breadcrumbs items={[
+        { label: 'Kreu', to: '/' },
+        { label: 'Admin' },
+        { label: 'Kategorite' },
+      ]} />
       <h2>Menaxho Kategorite</h2>
       {error && <div className="alert">{error}</div>}
 

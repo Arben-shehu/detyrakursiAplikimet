@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import Modal from '../components/Modal';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../toast/ToastContext';
 
 export default function AdminUsersPage() {
   const { user: me } = useAuth();
+  const toast = useToast();
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [confirmDel, setConfirmDel] = useState(null);
@@ -20,18 +23,24 @@ export default function AdminUsersPage() {
   useEffect(() => { load(); }, []);
 
   async function doDelete() {
-    const id = confirmDel.id;
+    const { id, username } = confirmDel;
     setConfirmDel(null);
     try {
       await api.del(`/api/users/${id}`);
+      toast.success(`Perdoruesi "${username}" u fshi`);
       load();
     } catch (e) {
-      setError(e.message);
+      toast.error(e.message);
     }
   }
 
   return (
     <section>
+      <Breadcrumbs items={[
+        { label: 'Kreu', to: '/' },
+        { label: 'Admin' },
+        { label: 'Perdoruesit' },
+      ]} />
       <h2>Perdoruesit</h2>
       {error && <div className="alert">{error}</div>}
       <table className="table">

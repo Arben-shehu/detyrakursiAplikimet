@@ -13,9 +13,10 @@ const ADMIN = {
 };
 
 const CATEGORIES = [
-  { name: 'Logjike',    description: 'Pyetje logjike, sekuenca dhe arsyetim' },
-  { name: 'Matematike', description: 'Pyetje me numra dhe veprime' },
-  { name: 'Verbale',    description: 'Fjale, analogji dhe kuptim' },
+  { name: 'Logjike',         description: 'Pyetje logjike, sekuenca dhe arsyetim' },
+  { name: 'Matematike',      description: 'Pyetje me numra dhe veprime' },
+  { name: 'Verbale',         description: 'Fjale, analogji dhe kuptim' },
+  { name: 'Logjike Vizuale', description: 'Pyetje me forma dhe modele vizuale' },
 ];
 
 // Helper i shkurter: q(cat, text, opcioneVare, indeksiKorrekt, difficulty)
@@ -27,6 +28,73 @@ function q(category, text, opts, correctIdx, difficulty = 1) {
     options: opts.map((t, i) => ({ t, correct: i === correctIdx })),
   };
 }
+
+// Helper per pyetjet vizuale: opsionet mund te jene strings ose objekte { text, svg }
+function qSvg(category, text, questionSvg, opts, correctIdx, difficulty = 2) {
+  return {
+    category,
+    text,
+    difficulty,
+    image_svg: questionSvg,
+    options: opts.map((o, i) => {
+      const obj = typeof o === 'string' ? { t: o } : { t: o.t || '', image_svg: o.svg };
+      obj.correct = i === correctIdx;
+      return obj;
+    }),
+  };
+}
+
+// Helper-a SVG: forma te shpejta per pyetjet vizuale
+const svg = {
+  circle: (r = 24, color = 'currentColor') =>
+    `<svg viewBox="0 0 80 80" width="80" height="80"><circle cx="40" cy="40" r="${r}" fill="${color}" /></svg>`,
+  square: (s = 50, color = 'currentColor') =>
+    `<svg viewBox="0 0 80 80" width="80" height="80"><rect x="${40 - s / 2}" y="${40 - s / 2}" width="${s}" height="${s}" fill="${color}" /></svg>`,
+  triangle: (rotation = 0, color = 'currentColor') =>
+    `<svg viewBox="0 0 80 80" width="80" height="80"><polygon points="40,15 65,65 15,65" fill="${color}" transform="rotate(${rotation} 40 40)" /></svg>`,
+  arrow: (rotation = 0, color = 'currentColor') =>
+    `<svg viewBox="0 0 80 80" width="80" height="80"><g transform="rotate(${rotation} 40 40)" stroke="${color}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="40" y1="60" x2="40" y2="20"/><polyline points="25,35 40,20 55,35"/></g></svg>`,
+  dots: (n = 1, color = 'currentColor') => {
+    const positions = [
+      [], [[40,40]], [[25,40],[55,40]], [[25,25],[55,40],[25,55]],
+      [[25,25],[55,25],[25,55],[55,55]], [[25,25],[55,25],[40,40],[25,55],[55,55]],
+      [[25,25],[55,25],[25,40],[55,40],[25,55],[55,55]],
+    ];
+    const ps = positions[n] || [];
+    const circles = ps.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="${color}" />`).join('');
+    return `<svg viewBox="0 0 80 80" width="80" height="80">${circles}</svg>`;
+  },
+};
+
+// Helper: nje sekuence vizuale me shapes nga e majta ne te djathte.
+// shapes: array fragmentesh SVG (PA tag-un <svg>...</svg>), pozicionohen ne x ne intervale 92.
+// Indeksi `placeholder` ben qe nje qelize te shfaqet me "?".
+function seqSVG(shapes, placeholder = shapes.length - 1) {
+  const cell = 80;
+  const gap = 12;
+  const total = shapes.length;
+  const w = total * (cell + gap) - gap;
+  const items = shapes.map((s, i) => {
+    const x = i * (cell + gap);
+    if (i === placeholder) {
+      return `<g transform="translate(${x},0)"><rect x="0" y="0" width="${cell}" height="${cell}" rx="8" fill="none" stroke="currentColor" stroke-dasharray="4,4" stroke-width="2"/><text x="${cell/2}" y="52" font-size="40" text-anchor="middle" fill="currentColor" font-weight="700">?</text></g>`;
+    }
+    return `<g transform="translate(${x},0)">${s}</g>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${w} ${cell}" width="${w}" height="${cell}">${items}</svg>`;
+}
+
+// Inner-only versions (pa wrapper <svg>) per perdorim brenda seqSVG
+const inner = {
+  circle: (r, color = 'currentColor') => `<circle cx="40" cy="40" r="${r}" fill="${color}"/>`,
+  square: (s, color = 'currentColor') => `<rect x="${40 - s/2}" y="${40 - s/2}" width="${s}" height="${s}" fill="${color}"/>`,
+  triangle: (rot = 0, color = 'currentColor') => `<polygon points="40,15 65,65 15,65" fill="${color}" transform="rotate(${rot} 40 40)"/>`,
+  arrow: (rot = 0, color = 'currentColor') => `<g transform="rotate(${rot} 40 40)" stroke="${color}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="40" y1="60" x2="40" y2="20"/><polyline points="25,35 40,20 55,35"/></g>`,
+  dots: (n, color = 'currentColor') => {
+    const pos = [[], [[40,40]], [[25,40],[55,40]], [[25,25],[55,40],[25,55]], [[25,25],[55,25],[25,55],[55,55]], [[25,25],[55,25],[40,40],[25,55],[55,55]], [[25,25],[55,25],[25,40],[55,40],[25,55],[55,55]]];
+    return (pos[n] || []).map(([x,y]) => `<circle cx="${x}" cy="${y}" r="6" fill="${color}"/>`).join('');
+  },
+};
 
 const QUESTIONS = [
   // ===================== LOGJIKE (34) =====================
@@ -215,6 +283,127 @@ const QUESTIONS = [
   q('Verbale', 'Kryeqyteti i Shqiperise eshte:', [
     'Tirana', 'Vlora', 'Shkodra', 'Durresi',
   ], 0),
+
+  // ===================== LOGJIKE VIZUALE (12) =====================
+  // 1) Rrathe qe rriten: 10, 20, 30, ?
+  qSvg('Logjike Vizuale', 'Cila figure vjen ne vazhdim te sekuences?',
+    seqSVG([inner.circle(10), inner.circle(20), inner.circle(30), null], 3),
+    [
+      { svg: svg.circle(15) },
+      { svg: svg.circle(25) },
+      { svg: svg.circle(40) },
+      { svg: svg.circle(10) },
+    ], 2),
+
+  // 2) Trekendesh qe rrotullohet 90 grade
+  qSvg('Logjike Vizuale', 'Cili eshte hapi tjeter ne rrotullim?',
+    seqSVG([inner.triangle(0), inner.triangle(90), inner.triangle(180), null], 3),
+    [
+      { svg: svg.triangle(45) },
+      { svg: svg.triangle(270) },
+      { svg: svg.triangle(0) },
+      { svg: svg.triangle(180) },
+    ], 1),
+
+  // 3) Numri i pikave: 1, 2, 3, ?
+  qSvg('Logjike Vizuale', 'Sa pika duhet te jene ne kuti?',
+    seqSVG([inner.dots(1), inner.dots(2), inner.dots(3), null], 3),
+    [
+      { svg: svg.dots(2) },
+      { svg: svg.dots(4) },
+      { svg: svg.dots(5) },
+      { svg: svg.dots(6) },
+    ], 1),
+
+  // 4) Shigjeta rrotullohen orës (lart, djathtas, posht, ?)
+  qSvg('Logjike Vizuale', 'Cila shigjete vjen ne vazhdim?',
+    seqSVG([inner.arrow(0), inner.arrow(90), inner.arrow(180), null], 3),
+    [
+      { svg: svg.arrow(0) },
+      { svg: svg.arrow(45) },
+      { svg: svg.arrow(270) },
+      { svg: svg.arrow(180) },
+    ], 2),
+
+  // 5) Pikat dyfishohen: 1, 2, 4, ?
+  qSvg('Logjike Vizuale', 'Numri i pikave dyfishohet ne cdo hap. Cila kuti pason?',
+    seqSVG([inner.dots(1), inner.dots(2), inner.dots(4), null], 3),
+    [
+      { svg: svg.dots(5) },
+      { svg: svg.dots(6) },
+      { svg: svg.dots(3) },
+      { svg: svg.dots(4) },
+    ], 1, 3),
+
+  // 6) Sekuence alternuese rrethi-katrori-rrethi-?
+  qSvg('Logjike Vizuale', 'Cila forme pason ne sekuencen alternuese?',
+    seqSVG([inner.circle(28), inner.square(50), inner.circle(28), null], 3),
+    [
+      { svg: svg.triangle(0) },
+      { svg: svg.square(50) },
+      { svg: svg.circle(28) },
+      { svg: svg.circle(40) },
+    ], 1),
+
+  // 7) Trekendesh me ngjyra alternuese (forma fikse, ngjyra alternohen)
+  qSvg('Logjike Vizuale', 'Forma rrotullohet 45 grade ne cdo hap. Cila vjen tjetra?',
+    seqSVG([inner.triangle(0), inner.triangle(45), inner.triangle(90), null], 3),
+    [
+      { svg: svg.triangle(135) },
+      { svg: svg.triangle(180) },
+      { svg: svg.triangle(225) },
+      { svg: svg.triangle(0) },
+    ], 0, 3),
+
+  // 8) Renia e madhesise se katrorit: 60, 50, 40, ?
+  qSvg('Logjike Vizuale', 'Madhesia e katrorit zvogelohet me 10 ne cdo hap. Cili vjen tjetri?',
+    seqSVG([inner.square(60), inner.square(50), inner.square(40), null], 3),
+    [
+      { svg: svg.square(35) },
+      { svg: svg.square(30) },
+      { svg: svg.square(25) },
+      { svg: svg.square(20) },
+    ], 1),
+
+  // 9) Pattern shap-sekuence: rreth → trekendesh → katror → rreth → trekendesh → ?
+  qSvg('Logjike Vizuale', 'Cila forme pason ne kete model ciklik?',
+    seqSVG([inner.circle(25), inner.triangle(0), inner.square(45), inner.circle(25), inner.triangle(0), null], 5),
+    [
+      { svg: svg.circle(25) },
+      { svg: svg.triangle(0) },
+      { svg: svg.square(45) },
+      { svg: svg.triangle(180) },
+    ], 2),
+
+  // 10) Pikat ne rritje: 1, 3, 5, ?
+  qSvg('Logjike Vizuale', 'Numri i pikave rritet me 2 ne cdo hap. Cila kuti pason?',
+    seqSVG([inner.dots(1), inner.dots(3), inner.dots(5), null], 3),
+    [
+      { svg: svg.dots(6) },
+      { svg: svg.dots(2) },
+      { svg: svg.dots(4) },
+      { svg: svg.dots(7) },
+    ], 3, 2),
+
+  // 11) Shigjeta nga e djathta drejt te majtes (270, 180, 90, ?)
+  qSvg('Logjike Vizuale', 'Shigjeta rrotullohet me 90 grade kunder ores. Cila vjen tjetra?',
+    seqSVG([inner.arrow(270), inner.arrow(180), inner.arrow(90), null], 3),
+    [
+      { svg: svg.arrow(180) },
+      { svg: svg.arrow(0) },
+      { svg: svg.arrow(45) },
+      { svg: svg.arrow(225) },
+    ], 1, 3),
+
+  // 12) Forma rriten dhe ndryshojne: rreth -> rreth me i madh -> katror i vogel -> katror i madh -> ?
+  qSvg('Logjike Vizuale', 'Ndiq modelin: forma rritet, pastaj ndryshon ne trekendesh. Cili vjen tjetri?',
+    seqSVG([inner.circle(20), inner.circle(35), inner.triangle(0), null], 3),
+    [
+      { svg: svg.triangle(0) },
+      { svg: svg.square(40) },
+      { svg: svg.circle(20) },
+      { svg: svg.square(60) },
+    ], 3, 4),
 ];
 
 async function main() {
@@ -258,14 +447,14 @@ async function main() {
         continue;
       }
       const qr = await client.query(
-        'INSERT INTO questions (category_id, text, difficulty) VALUES ($1, $2, $3) RETURNING id',
-        [categoryId, q.text, q.difficulty || 1]
+        'INSERT INTO questions (category_id, text, difficulty, image_svg) VALUES ($1, $2, $3, $4) RETURNING id',
+        [categoryId, q.text, q.difficulty || 1, q.image_svg || null]
       );
       const qid = qr.rows[0].id;
       for (const o of q.options) {
         await client.query(
-          'INSERT INTO options (question_id, text, is_correct) VALUES ($1, $2, $3)',
-          [qid, o.t, !!o.correct]
+          'INSERT INTO options (question_id, text, is_correct, image_svg) VALUES ($1, $2, $3, $4)',
+          [qid, o.t, !!o.correct, o.image_svg || null]
         );
       }
     }

@@ -29,7 +29,9 @@ export default function HomePage() {
       {user && !isAdmin && (
         <div className="cta-row">
           <Link to="/quiz" className="btn btn-primary">Fillo Testin</Link>
-          <Link to="/history" className="btn btn-ghost">Shih historinë</Link>
+          <Link to="/practice" className="btn">Mode Praktike</Link>
+          <Link to="/leaderboard" className="btn btn-ghost">🏆 Leaderboard</Link>
+          <Link to="/history" className="btn btn-ghost">Historia</Link>
         </div>
       )}
       {isAdmin && (

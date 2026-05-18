@@ -14,14 +14,29 @@ export default function HistoryPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="loading">Po ngarkohet...</div>;
+  if (loading) {
+    return (
+      <section>
+        <h2>Historia juaj</h2>
+        {[1, 2, 3, 4].map((i) => <div key={i} className="skeleton skel-card" />)}
+      </section>
+    );
+  }
   if (error) return <div className="alert">{error}</div>;
 
   return (
     <section>
       <h2>Historia juaj</h2>
       {items.length === 0 ? (
-        <p className="muted">Akoma nuk keni bere asnje tentative. <Link to="/quiz">Filloni testin</Link>.</p>
+        <div className="empty-state">
+          <div className="empty-icon">📜</div>
+          <h3>Asnje tentative ende</h3>
+          <p className="muted">Bej testin tend te pare ose nje praktike per ta pare ketu.</p>
+          <div className="cta-row">
+            <Link to="/quiz" className="btn btn-primary">Fillo Testin</Link>
+            <Link to="/practice" className="btn">Praktike</Link>
+          </div>
+        </div>
       ) : (
         <table className="table">
           <thead>

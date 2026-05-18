@@ -8,6 +8,8 @@ const categoriesRoutes = require('./routes/categories.routes');
 const questionsRoutes = require('./routes/questions.routes');
 const attemptsRoutes = require('./routes/attempts.routes');
 const usersRoutes = require('./routes/users.routes');
+const leaderboardRoutes = require('./routes/leaderboard.routes');
+const analyticsRoutes = require('./routes/analytics.routes');
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use('/api/categories', categoriesRoutes);
 app.use('/api/questions', questionsRoutes);
 app.use('/api/attempts', attemptsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // 404
 app.use((req, res) => {

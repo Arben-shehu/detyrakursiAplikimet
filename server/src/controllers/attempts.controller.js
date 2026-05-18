@@ -18,36 +18,38 @@ function isExpired(startedAt) {
 async function start(req, res) {
   try {
     const userId = req.user.id;
+    const mode = req.body?.mode === 'practice' ? 'practice' : 'real';
+    const total = mode === 'practice' ? 10 : N;
 
     // Verifiko qe ka mjaft pyetje
     const cnt = await query('SELECT COUNT(*)::int AS n FROM questions');
-    if (cnt.rows[0].n < N) {
-      return res.status(400).json({ error: `Sistemi nuk ka mjaft pyetje (${cnt.rows[0].n}/${N})` });
+    if (cnt.rows[0].n < total) {
+      return res.status(400).json({ error: `Sistemi nuk ka mjaft pyetje (${cnt.rows[0].n}/${total})` });
     }
 
     const result = await withTransaction(async (client) => {
       const ar = await client.query(
-        `INSERT INTO attempts (user_id, total_questions)
-         VALUES ($1, $2)
-         RETURNING id, started_at, total_questions`,
-        [userId, N]
+        `INSERT INTO attempts (user_id, total_questions, mode)
+         VALUES ($1, $2, $3)
+         RETURNING id, started_at, total_questions, mode`,
+        [userId, total, mode]
       );
       const attempt = ar.rows[0];
 
-      // Zgjedh N pyetje random
+      // Zgjedh pyetje random
       const qr = await client.query(
-        `SELECT q.id, q.text, q.difficulty, c.name AS category_name
+        `SELECT q.id, q.text, q.difficulty, q.image_svg, c.name AS category_name
          FROM questions q
          LEFT JOIN categories c ON c.id = q.category_id
          ORDER BY random() LIMIT $1`,
-        [N]
+        [total]
       );
       const questions = qr.rows;
 
       // Per cdo pyetje, merr opsionet (pa is_correct!)
       const ids = questions.map((q) => q.id);
       const or = await client.query(
-        `SELECT id, question_id, text FROM options
+        `SELECT id, question_id, text, image_svg FROM options
          WHERE question_id = ANY($1::int[])
          ORDER BY question_id, id`,
         [ids]
@@ -55,11 +57,10 @@ async function start(req, res) {
       const optsByQ = new Map();
       for (const o of or.rows) {
         if (!optsByQ.has(o.question_id)) optsByQ.set(o.question_id, []);
-        optsByQ.get(o.question_id).push({ id: o.id, text: o.text });
+        optsByQ.get(o.question_id).push({ id: o.id, text: o.text, image_svg: o.image_svg });
       }
       for (const q of questions) q.options = optsByQ.get(q.id) || [];
 
-      // Ruaj snapshot-in e pyetjeve te tentatives me NULL selected_option_id
       for (const q of questions) {
         await client.query(
           `INSERT INTO answers (attempt_id, question_id, selected_option_id, is_correct)
@@ -74,7 +75,8 @@ async function start(req, res) {
     res.status(201).json({
       attempt_id: result.attempt.id,
       started_at: result.attempt.started_at,
-      time_limit_minutes: TIME_LIMIT_MIN,
+      time_limit_minutes: mode === 'practice' ? null : TIME_LIMIT_MIN,
+      mode: result.attempt.mode,
       questions: result.questions,
     });
   } catch (err) {
@@ -90,17 +92,21 @@ async function answer(req, res) {
 
   try {
     const ar = await query(
-      'SELECT id, user_id, started_at, finished_at FROM attempts WHERE id = $1',
+      'SELECT id, user_id, started_at, finished_at, mode FROM attempts WHERE id = $1',
       [attemptId]
     );
     if (ar.rowCount === 0) return res.status(404).json({ error: 'Tentativa nuk u gjet' });
     const attempt = ar.rows[0];
     if (attempt.user_id !== req.user.id) return res.status(403).json({ error: 'Tentative e perdoruesit tjeter' });
     if (attempt.finished_at) return res.status(400).json({ error: 'Tentativa eshte mbyllur' });
-    if (isExpired(attempt.started_at)) return res.status(400).json({ error: 'Koha ka skaduar' });
+    const isPractice = attempt.mode === 'practice';
+    if (!isPractice && isExpired(attempt.started_at)) {
+      return res.status(400).json({ error: 'Koha ka skaduar' });
+    }
 
     // Validimi i opsionit (nese eshte dhene)
     let isCorrect = null;
+    let correctOptionId = null;
     if (option_id) {
       const or = await query(
         'SELECT id, question_id, is_correct FROM options WHERE id = $1',
@@ -122,6 +128,17 @@ async function answer(req, res) {
            is_correct = EXCLUDED.is_correct`,
       [attemptId, question_id, option_id || null, isCorrect]
     );
+
+    // Ne practice mode, kthen feedback te menjehershem
+    if (isPractice) {
+      const cr = await query(
+        'SELECT id FROM options WHERE question_id = $1 AND is_correct = true LIMIT 1',
+        [question_id]
+      );
+      correctOptionId = cr.rows[0]?.id || null;
+      return res.json({ ok: true, is_correct: isCorrect, correct_option_id: correctOptionId });
+    }
+
     res.json({ ok: true });
   } catch (err) {
     console.error('[attempts.answer]', err);
