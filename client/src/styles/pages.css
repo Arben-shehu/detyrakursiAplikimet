@@ -1,0 +1,159 @@
+/* =====================================================================
+   Stile per faqet dhe komponentet specifike
+   ===================================================================== */
+
+/* Home */
+.home { display: flex; flex-direction: column; gap: 1.2rem; }
+.home .lead { color: var(--muted); font-size: 1.05rem; max-width: 640px; }
+.home-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  box-shadow: var(--shadow);
+  max-width: 640px;
+}
+.home-card ul { list-style: disc; padding-left: 1.2rem; margin-top: 0.6rem; }
+.home-card li { margin: 0.2rem 0; color: var(--text); }
+.cta-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.5rem; }
+
+/* Quiz intro */
+.quiz-intro {
+  max-width: 480px; margin: 3rem auto; text-align: center;
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 1rem; align-items: center;
+}
+
+/* Quiz layout */
+.quiz { display: flex; flex-direction: column; gap: 1rem; }
+.quiz-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 0.8rem 1rem; border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.progress { display: flex; flex-direction: column; gap: 0.3rem; min-width: 60%; }
+.progress .bar {
+  height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;
+}
+.progress .fill { height: 100%; background: var(--primary); transition: width 0.2s; }
+.timer {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: var(--primary);
+  border: 1px solid #c7d2fe;
+}
+.timer-warn { background: #fef2f2; color: var(--danger); border-color: #fecaca; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+
+.qcard {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+.qcard-head { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.7rem; }
+.qbadge {
+  background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe;
+  padding: 2px 8px; border-radius: 999px; font-size: 0.8rem;
+}
+.qcat {
+  background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
+  padding: 2px 8px; border-radius: 999px; font-size: 0.78rem;
+  margin-left: 0.4rem;
+}
+.qtext { font-size: 1.15rem; margin-bottom: 1rem; }
+
+.qopts { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.qopt {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 0.9rem; border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer; background: #fff;
+  transition: border-color 0.12s, background 0.12s;
+}
+.qopt:hover { background: #f9fafb; }
+.qopt input { width: auto; }
+.qopt-selected {
+  border-color: var(--primary);
+  background: #eef2ff;
+}
+
+.quiz-nav { display: flex; justify-content: space-between; }
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+.grid-cell {
+  background: #fff; border: 1px solid var(--border);
+  padding: 8px 0; border-radius: 6px; text-align: center;
+  font-size: 0.85rem; color: var(--muted);
+}
+.grid-cell.done { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.grid-cell.active { border-color: var(--primary); color: var(--primary); font-weight: 600; }
+
+/* Result */
+.result { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.result-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 2rem; text-align: center; width: 100%; max-width: 420px;
+  margin: 1rem auto;
+}
+.score-big { font-size: 2.5rem; font-weight: 700; }
+.score-pct { font-size: 1.5rem; color: var(--primary); margin: 0.4rem 0 0.8rem; }
+
+/* Review (rishikim) */
+.back-link { display: inline-block; margin-bottom: 0.6rem; color: var(--muted); }
+.review { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem; }
+.review-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+}
+.review-item.ok  { border-left-color: var(--ok); }
+.review-item.bad { border-left-color: var(--danger); }
+.review-q { font-weight: 500; margin-bottom: 0.5rem; }
+.review-q .num { color: var(--muted); margin-right: 0.3rem; }
+.review-row { display: flex; gap: 0.4rem; font-size: 0.95rem; }
+.review-row .lbl { color: var(--muted); min-width: 110px; }
+
+/* Admin questions list */
+.qlist { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.7rem; }
+.qlist-item {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem 1.2rem; box-shadow: var(--shadow);
+}
+.qlist-head { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+.qlist-text { font-weight: 500; margin-bottom: 0.4rem; }
+.qlist-opts { list-style: none; padding-left: 0.6rem; color: var(--muted); }
+.qlist-opts li { padding: 2px 0; }
+.qlist-opts li.is-correct { color: var(--ok); font-weight: 500; }
+.qlist-actions { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
+
+/* Question form */
+.opts-edit {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.opts-edit legend { padding: 0 4px; color: var(--muted); font-size: 0.85rem; }
+.opt-row { display: flex; align-items: center; gap: 0.5rem; }
+.opt-row input[type=radio] { width: auto; }
+.opt-text { flex: 1; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .navbar-inner { flex-wrap: wrap; gap: 0.6rem; }
+  .nav-links { order: 3; width: 100%; overflow-x: auto; }
+  .quiz-header { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+  .table th:nth-child(3), .table td:nth-child(3) { display: none; }
+}
