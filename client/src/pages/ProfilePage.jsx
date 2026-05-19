@@ -43,7 +43,7 @@ export default function ProfilePage() {
 
       <div className="kpi-grid">
         <KpiCard label="Teste te plota" value={total} icon="🎯" />
-        <KpiCard label="Skori me i larte" value={best ? `${best}/20` : '—'} icon="🏆" />
+        <KpiCard label="Rezultati me i larte" value={best ? `${best}/20` : '—'} icon="🏆" />
         <KpiCard label="Mesatare" value={avg ? `${avg}/20` : '—'} icon="📊" />
         <KpiCard label="Saktesi total" value={`${accuracy}%`} icon="🎯" />
       </div>
@@ -74,7 +74,7 @@ export default function ProfilePage() {
         <div className="chart-card">
           <h3>Tentativa e fundit</h3>
           <p>
-            Skori: <b>{lastAttempt.score}/{lastAttempt.total_questions}</b> &middot;{' '}
+            Rezultati: <b>{lastAttempt.score}/{lastAttempt.total_questions}</b> &middot;{' '}
             {fmtDate(lastAttempt.finished_at)}
           </p>
           <Link to={`/history/${lastAttempt.id}`} className="btn">Shih detajet</Link>
@@ -158,8 +158,8 @@ function computeBadges({ total, best, avg }) {
   if (total >= 1) out.push({ key: 'first', icon: '🌱', name: 'Hapi i Pare', desc: 'Beje testin e pare', color: 'badge-green' });
   if (total >= 5) out.push({ key: 'persistent', icon: '🔥', name: 'Kembengulja', desc: '5+ tentativa', color: 'badge-orange' });
   if (total >= 10) out.push({ key: 'master', icon: '🎓', name: 'Master', desc: '10+ tentativa', color: 'badge-purple' });
-  if (best >= 15) out.push({ key: 'high', icon: '⭐', name: 'I Larte', desc: 'Skor 15+/20', color: 'badge-yellow' });
-  if (best === 20) out.push({ key: 'perfect', icon: '💎', name: 'Perfeksionist', desc: 'Skor 20/20!', color: 'badge-pink' });
+  if (best >= 15) out.push({ key: 'high', icon: '⭐', name: 'I Larte', desc: 'Rezultati 15+/20', color: 'badge-yellow' });
+  if (best === 20) out.push({ key: 'perfect', icon: '💎', name: 'Perfeksionist', desc: 'Rezultati 20/20!', color: 'badge-pink' });
   if (avg >= 14) out.push({ key: 'consistent', icon: '📈', name: 'Konsistent', desc: 'Mesatarja > 14', color: 'badge-blue' });
   return out;
 }

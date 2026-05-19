@@ -34,7 +34,7 @@ export default function ResultPage() {
       .finally(() => setLoading(false));
   }, [attemptId, result]);
 
-  if (loading) return <div className="loading">Po llogaritet skori...</div>;
+  if (loading) return <div className="loading">Po llogaritet rezultati...</div>;
   if (error) return <div className="alert">{error}</div>;
   if (!result) return null;
 
@@ -45,7 +45,7 @@ export default function ResultPage() {
       <Confetti active={celebrate} />
       <h2 className="no-print">Rezultati i testit</h2>
       <div className="result-card">
-        <ScoreCircle percentage={result.percentage || 0} label="skor i pergjithshem" />
+        <ScoreCircle percentage={result.percentage || 0} label="Rezultati i pergjithshem" />
         <div className="score-big">
           <AnimatedCounter to={result.score} />
           <span className="score-total"> / {result.total}</span>
@@ -70,7 +70,7 @@ export default function ResultPage() {
             <p className="cert-intro">Kjo certifikate i jepet</p>
             <h2 className="cert-name">{user?.username || '—'}</h2>
             <p className="cert-text">
-              per perfundimin me sukses te testit IQ me skorin
+              per perfundimin me sukses te testit IQ me rezultatin
             </p>
             <div className="cert-score">
               <div className="cert-score-num">{result.score} / {result.total}</div>

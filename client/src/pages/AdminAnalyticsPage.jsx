@@ -48,7 +48,7 @@ export default function AdminAnalyticsPage() {
 
       {/* Score distribution */}
       <div className="chart-card">
-        <h3>Shperndarja e skoreve</h3>
+        <h3>Shperndarja e rezultateve</h3>
         {score_distribution.length === 0 ? (
           <p className="muted">Ende pa te dhena.</p>
         ) : (

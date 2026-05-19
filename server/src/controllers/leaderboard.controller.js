@@ -1,4 +1,4 @@
-// Leaderboard publik: top 10 skoret me te larta nga te gjitha tentativat e mbaruara.
+// Leaderboard publik: top 10 rezultatet me te larta nga te gjitha tentativat e mbaruara.
 // Vetem `mode = 'real'` (jo practice).
 
 const { query } = require('../db/pool');

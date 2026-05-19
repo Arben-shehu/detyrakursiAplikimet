@@ -1,7 +1,7 @@
 // Logjika e tentativave te testit IQ.
 // start  : zgjedh N pyetje random, krijon nje attempt, kthen pyetjet pa is_correct
 // answer : upsert i nje pergjigjeje (kontrollon kohen 15 min)
-// finish : llogarit skorin dhe vendos finished_at
+// finish : llogarit rezultatin dhe vendos finished_at
 // listMine : tentativat e userit aktual
 // getOne : detajet e nje tentative (rishikim)
 
@@ -221,16 +221,19 @@ async function getOne(req, res) {
     const dr = await query(
       `SELECT a.question_id, a.selected_option_id, a.is_correct,
               q.text AS question_text,
+              q.image_svg AS question_image_svg,
               c.name AS category_name,
               o_sel.text AS selected_text,
+              o_sel.image_svg AS selected_image_svg,
               o_corr.id AS correct_option_id,
-              o_corr.text AS correct_text
+              o_corr.text AS correct_text,
+              o_corr.image_svg AS correct_image_svg
        FROM answers a
        LEFT JOIN questions q ON q.id = a.question_id
        LEFT JOIN categories c ON c.id = q.category_id
        LEFT JOIN options o_sel ON o_sel.id = a.selected_option_id
        LEFT JOIN LATERAL (
-         SELECT id, text FROM options
+         SELECT id, text, image_svg FROM options
          WHERE question_id = a.question_id AND is_correct = true
          LIMIT 1
        ) o_corr ON true

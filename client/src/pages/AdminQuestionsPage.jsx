@@ -233,10 +233,20 @@ export default function AdminQuestionsPage() {
               <span className="muted">#{q.id}</span>
             </div>
             <div className="qlist-text">{q.text}</div>
-            <ul className="qlist-opts">
+            {q.image_svg && (
+              <div className="q-svg q-svg-admin" dangerouslySetInnerHTML={{ __html: q.image_svg }} />
+            )}
+            <ul className={`qlist-opts ${q.options.some((o) => o.image_svg) ? 'qlist-opts-grid' : ''}`}>
               {q.options.map((o) => (
                 <li key={o.id} className={o.is_correct ? 'is-correct' : ''}>
-                  {o.is_correct ? '✓ ' : '• '}{o.text}
+                  {o.image_svg ? (
+                    <>
+                      {o.is_correct && <span className="opt-check">✓</span>}
+                      <span className="qopt-svg-admin" dangerouslySetInnerHTML={{ __html: o.image_svg }} />
+                    </>
+                  ) : (
+                    <>{o.is_correct ? '✓ ' : '• '}{o.text}</>
+                  )}
                 </li>
               ))}
             </ul>

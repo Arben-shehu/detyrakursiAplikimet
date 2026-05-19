@@ -14,6 +14,7 @@ function groupQuestionsWithOptions(rows) {
         category_name: row.category_name,
         text: row.q_text,
         difficulty: row.difficulty,
+        image_svg: row.q_image_svg,
         options: [],
       });
     }
@@ -22,6 +23,7 @@ function groupQuestionsWithOptions(rows) {
         id: row.o_id,
         text: row.o_text,
         is_correct: row.is_correct,
+        image_svg: row.o_image_svg,
       });
     }
   }
@@ -32,8 +34,10 @@ async function list(req, res) {
   try {
     const r = await query(
       `SELECT q.id AS q_id, q.text AS q_text, q.difficulty, q.category_id,
+              q.image_svg AS q_image_svg,
               c.name AS category_name,
-              o.id AS o_id, o.text AS o_text, o.is_correct
+              o.id AS o_id, o.text AS o_text, o.is_correct,
+              o.image_svg AS o_image_svg
        FROM questions q
        LEFT JOIN categories c ON c.id = q.category_id
        LEFT JOIN options o ON o.question_id = q.id
@@ -50,8 +54,10 @@ async function getOne(req, res) {
   try {
     const r = await query(
       `SELECT q.id AS q_id, q.text AS q_text, q.difficulty, q.category_id,
+              q.image_svg AS q_image_svg,
               c.name AS category_name,
-              o.id AS o_id, o.text AS o_text, o.is_correct
+              o.id AS o_id, o.text AS o_text, o.is_correct,
+              o.image_svg AS o_image_svg
        FROM questions q
        LEFT JOIN categories c ON c.id = q.category_id
        LEFT JOIN options o ON o.question_id = q.id

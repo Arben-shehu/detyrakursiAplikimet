@@ -105,42 +105,19 @@ export default function PracticePage() {
         <span className="badge">PA TIMER</span>
       </div>
 
-      <article className="qcard">
-        <div className="qcard-head">
-          <span className="qbadge">Pyetja {current + 1} / {total}</span>
-          {q.category_name && <span className="qcat">{q.category_name}</span>}
+      <QuestionCard
+        index={current}
+        total={total}
+        question={q}
+        selectedOptionId={fb?.selectedId}
+        onSelect={(oid) => pickOption(q.id, oid)}
+        feedback={fb}
+      />
+      {fb && (
+        <div className={`fb-row ${fb.isCorrect ? 'fb-ok' : 'fb-bad'}`}>
+          {fb.isCorrect ? 'Bravo! 🎉' : 'Pergjigja e sakte eshte e theksuar me jeshil.'}
         </div>
-        <h3 className="qtext">{q.text}</h3>
-        <ul className="qopts">
-          {q.options.map((o) => {
-            let cls = '';
-            if (fb) {
-              if (o.id === fb.correctId) cls = 'qopt-correct';
-              else if (o.id === fb.selectedId) cls = 'qopt-wrong';
-            }
-            return (
-              <li key={o.id}>
-                <label className={`qopt ${cls}`}>
-                  <input
-                    type="radio"
-                    name={`q-${q.id}`}
-                    checked={fb?.selectedId === o.id}
-                    disabled={!!fb}
-                    onChange={() => pickOption(q.id, o.id)}
-                  />
-                  <span>{o.text}</span>
-                  {fb && o.id === fb.correctId && <span className="ok-tag">✓ E sakte</span>}
-                </label>
-              </li>
-            );
-          })}
-        </ul>
-        {fb && (
-          <div className={`fb-row ${fb.isCorrect ? 'fb-ok' : 'fb-bad'}`}>
-            {fb.isCorrect ? 'Bravo! 🎉' : 'Pergjigja e sakte eshte e theksuar me jeshil.'}
-          </div>
-        )}
-      </article>
+      )}
 
       <div className="quiz-nav">
         <button className="btn btn-ghost" disabled={current === 0} onClick={() => setCurrent((i) => i - 1)}>

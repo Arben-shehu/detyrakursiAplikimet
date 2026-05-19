@@ -44,7 +44,7 @@ export default function HistoryPage() {
               <th>#</th>
               <th>Filluar</th>
               <th>Mbaruar</th>
-              <th>Skori</th>
+              <th>Rezultati</th>
               <th></th>
             </tr>
           </thead>

@@ -16,7 +16,7 @@ export default function HomePage() {
         <ul>
           <li>Te jepen <b>20 pyetje</b> te zgjedhura ne menyre random</li>
           <li>Keni <b>15 minuta</b> kohe per ti perfunduar</li>
-          <li>Ne fund shihni skorin dhe pergjigjet e sakta</li>
+          <li>Ne fund shihni rezultatin dhe pergjigjet e sakta</li>
         </ul>
       </div>
 

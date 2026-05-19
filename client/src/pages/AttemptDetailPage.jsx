@@ -27,7 +27,7 @@ export default function AttemptDetailPage() {
       <h2>Tentativa #{attempt.id}</h2>
       <p className="muted">
         Filluar: {fmt(attempt.started_at)} &middot; Mbaruar: {fmt(attempt.finished_at)} &middot;
-        Skori: <b>{attempt.score ?? '—'} / {attempt.total_questions}</b>
+        Rezultati: <b>{attempt.score ?? '—'} / {attempt.total_questions}</b>
       </p>
 
       <ol className="review">
@@ -37,14 +37,25 @@ export default function AttemptDetailPage() {
               <span className="num">{i + 1}.</span> {d.question_text}
               {d.category_name && <span className="qcat">{d.category_name}</span>}
             </div>
+            {d.question_image_svg && (
+              <div className="q-svg" dangerouslySetInnerHTML={{ __html: d.question_image_svg }} />
+            )}
             <div className="review-row">
               <span className="lbl">Pergjigja juaj:</span>
-              <span>{d.selected_text || <em className="muted">e palidhur</em>}</span>
+              {d.selected_image_svg ? (
+                <span className="qopt-svg-inline" dangerouslySetInnerHTML={{ __html: d.selected_image_svg }} />
+              ) : (
+                <span>{d.selected_text || <em className="muted">e palidhur</em>}</span>
+              )}
             </div>
             {!d.is_correct && (
               <div className="review-row">
                 <span className="lbl">E sakta:</span>
-                <span>{d.correct_text || '—'}</span>
+                {d.correct_image_svg ? (
+                  <span className="qopt-svg-inline" dangerouslySetInnerHTML={{ __html: d.correct_image_svg }} />
+                ) : (
+                  <span>{d.correct_text || '—'}</span>
+                )}
               </div>
             )}
           </li>

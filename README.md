@@ -90,7 +90,7 @@ Vite e perdor proxy-n (`/api` → `http://localhost:4000`), keshtu qe nuk ke nev
 5. Shko te **Kategorite** → shto nje kategori te re.
 6. **Logout** → **login** si `studenti1`.
 7. Klikon **Fillo Testin** → pergjigju → **Mbaro**.
-8. Shih skorin ne **Result** dhe shko te **Historia ime → Detaje** per rishikim.
+8. Shih rezultatin ne **Result** dhe shko te **Historia ime → Detaje** per rishikim.
 
 ---
 
@@ -113,7 +113,7 @@ DELETE /api/questions/:id            (admin)
 
 POST   /api/attempts/start           -> attempt + 20 pyetje
 POST   /api/attempts/:id/answer      -> ruan nje pergjigje
-POST   /api/attempts/:id/finish      -> kalkulon skorin
+POST   /api/attempts/:id/finish      -> kalkulon rezultatin
 GET    /api/attempts/me              -> historia personale
 GET    /api/attempts/:id             -> detaje + pergjigjet e sakta (vetem pas mbarimit)
 

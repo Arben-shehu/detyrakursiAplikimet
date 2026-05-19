@@ -19,7 +19,7 @@ export default function LeaderboardPage() {
   return (
     <section>
       <h2>🏆 Leaderboard - Top 10</h2>
-      <p className="muted">Skoret me te larta nga te gjitha tentativat e mbaruara.</p>
+      <p className="muted">Rezultatet me te larta nga te gjitha tentativat e mbaruara.</p>
 
       {items.length === 0 ? (
         <p className="muted">Ende askush nuk ka mbaruar nje test. Bej te paren!</p>
