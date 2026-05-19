@@ -131,7 +131,7 @@ const QUESTIONS = [
     '3', '33', '100', '300',
   ], 0, 2),
   q('Logjike', 'Babai im eshte djali i gjyshit tend. Une jam:', [
-    'kushëriri yt', 'vellai yt', 'xhaxhai yt', 'biri yt',
+    'kusheriri yt', 'vellai yt', 'xhaxhai yt', 'biri yt',
   ], 1),
   q('Logjike', 'Cili element nuk i perket grupit: macja, qeni, lulja, lopa?', [
     'macja', 'qeni', 'lulja', 'lopa',
@@ -222,7 +222,7 @@ const QUESTIONS = [
   q('Gjuhesore', 'Sinonimi i fjales "i forte" eshte:', ['i dobet', 'i fuqishem', 'i shkurter', 'i sheshte'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i shpejte" eshte:', ['i ngadalte', 'i rrufeshem', 'i qete', 'i thelle'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i bukur" eshte:', ['i shemtuar', 'i ftohte', 'i hijshem', 'i larte'], 2),
-  q('Gjuhesore', 'Sinonimi i fjales "armik" eshte:', ['mik', 'kunderpartit', 'shoke', 'bashkepunetor'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "armik" eshte:', ['mik', 'kundershtar', 'shoke', 'bashkepunetor'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i pasur" eshte:', ['i varfer', 'i kamur', 'i lire', 'i mire'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i lehte" eshte:', ['i rende', 'i thjeshte', 'i veshtire', 'i larte'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i guximshem" eshte:', ['i frikesuar', 'trim', 'i ngathet', 'i qete'], 1),
@@ -240,8 +240,8 @@ const QUESTIONS = [
   q('Gjuhesore', 'Mjek eshte per spital sic eshte mesues per:', ['shtepi', 'shkolle', 'park', 'biblioteke'], 1),
   q('Gjuhesore', 'Zog eshte per qiell sic eshte peshku per:', ['toke', 'uje', 'rere', 'pyll'], 1),
   q('Gjuhesore', 'Diell eshte per dite sic eshte hena per:', ['dimer', 'nate', 'pranvere', 'vere'], 1),
-  q('Gjuhesore', 'Laps eshte per shkruajte sic eshte gerez per:', ['pres', 'presim', 'lyej', 'shko'], 1),
-  q('Gjuhesore', 'Bareshe eshte per kope sic eshte mesues per:', ['libra', 'tabela', 'nxenes', 'rrugë'], 2),
+  q('Gjuhesore', 'Laps eshte per shkrim sic eshte gershere per:', ['prerje', 'ngjyrosje', 'shkrim', 'matje'], 0),
+  q('Gjuhesore', 'Bareshe eshte per kope sic eshte mesues per:', ['libra', 'tabela', 'nxenes', 'rruge'], 2),
   q('Gjuhesore', 'Kuzhinier eshte per restorant sic eshte gjyqtar per:', ['shtepi', 'sallon', 'gjykate', 'zyre'], 2),
 
   q('Gjuhesore', 'Kuptimi i fjales "trim" eshte:', ['i frikesuar', 'i guximshem', 'i ngadalte', 'i qete'], 1),
@@ -253,7 +253,7 @@ const QUESTIONS = [
   ], 1),
   q('Gjuhesore', 'Cfare eshte nje "monolog"?', [
     'flas me dy persona',
-    'flas i vetem para tjeretve',
+    'flas i vetem para publikut',
     'kenge me grup',
     'shfaqje me shume aktore',
   ], 1),

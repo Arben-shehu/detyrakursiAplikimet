@@ -67,6 +67,38 @@ DO $$ BEGIN
   END IF;
 END $$;
 
+-- Rregullime gjuhesore te pyetjeve / opsioneve (idempotente: bazohen ne tekst)
+UPDATE options SET text = 'kusheriri yt'
+  WHERE text = 'kushëriri yt';
+
+UPDATE options SET text = 'kundershtar'
+  WHERE text = 'kunderpartit';
+
+UPDATE options SET text = 'rruge'
+  WHERE text = 'rrugë';
+
+UPDATE options SET text = 'flas i vetem para publikut'
+  WHERE text = 'flas i vetem para tjeretve';
+
+-- Q#88: rishkruan pyetjen dhe opsionet (vetem nese tekstin e vjeter)
+DO $$
+DECLARE qid INT;
+BEGIN
+  SELECT id INTO qid FROM questions
+    WHERE text = 'Laps eshte per shkruajte sic eshte gerez per:' LIMIT 1;
+  IF qid IS NOT NULL THEN
+    UPDATE questions SET text = 'Laps eshte per shkrim sic eshte gershere per:' WHERE id = qid;
+    -- Fshij opsionet e vjetra, fut te rejat
+    DELETE FROM answers WHERE question_id = qid;
+    DELETE FROM options WHERE question_id = qid;
+    INSERT INTO options (question_id, text, is_correct) VALUES
+      (qid, 'prerje',    TRUE),
+      (qid, 'ngjyrosje', FALSE),
+      (qid, 'shkrim',    FALSE),
+      (qid, 'matje',     FALSE);
+  END IF;
+END $$;
+
 -- Idempotent constraints (vetem nese mungojne)
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'answers_attempt_question_unique') THEN
