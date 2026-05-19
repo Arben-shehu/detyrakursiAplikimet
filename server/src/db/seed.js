@@ -15,7 +15,7 @@ const ADMIN = {
 const CATEGORIES = [
   { name: 'Logjike',         description: 'Pyetje logjike, sekuenca dhe arsyetim' },
   { name: 'Matematike',      description: 'Pyetje me numra dhe veprime' },
-  { name: 'Verbale',         description: 'Fjale, analogji dhe kuptim' },
+  { name: 'Gjuhesore',       description: 'Fjale, analogji dhe kuptim' },
   { name: 'Logjike Vizuale', description: 'Pyetje me forma dhe modele vizuale' },
 ];
 
@@ -218,69 +218,69 @@ const QUESTIONS = [
   q('Matematike', 'Nese 3 punetore mbarojne nje pune per 6 dite, sa dite duhen 6 punetore (e njejta pune)?', ['2', '3', '4', '6'], 1, 2),
 
   // ===================== VERBALE (33) =====================
-  q('Verbale', 'Sinonimi i fjales "i lumtur" eshte:', ['i trishtuar', 'i merzitur', 'i gezuar', 'i lodhur'], 2),
-  q('Verbale', 'Sinonimi i fjales "i forte" eshte:', ['i dobet', 'i fuqishem', 'i shkurter', 'i sheshte'], 1),
-  q('Verbale', 'Sinonimi i fjales "i shpejte" eshte:', ['i ngadalte', 'i rrufeshem', 'i qete', 'i thelle'], 1),
-  q('Verbale', 'Sinonimi i fjales "i bukur" eshte:', ['i shemtuar', 'i ftohte', 'i hijshem', 'i larte'], 2),
-  q('Verbale', 'Sinonimi i fjales "armik" eshte:', ['mik', 'kunderpartit', 'shoke', 'bashkepunetor'], 1),
-  q('Verbale', 'Sinonimi i fjales "i pasur" eshte:', ['i varfer', 'i kamur', 'i lire', 'i mire'], 1),
-  q('Verbale', 'Sinonimi i fjales "i lehte" eshte:', ['i rende', 'i thjeshte', 'i veshtire', 'i larte'], 1),
-  q('Verbale', 'Sinonimi i fjales "i guximshem" eshte:', ['i frikesuar', 'trim', 'i ngathet', 'i qete'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i lumtur" eshte:', ['i trishtuar', 'i merzitur', 'i gezuar', 'i lodhur'], 2),
+  q('Gjuhesore', 'Sinonimi i fjales "i forte" eshte:', ['i dobet', 'i fuqishem', 'i shkurter', 'i sheshte'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i shpejte" eshte:', ['i ngadalte', 'i rrufeshem', 'i qete', 'i thelle'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i bukur" eshte:', ['i shemtuar', 'i ftohte', 'i hijshem', 'i larte'], 2),
+  q('Gjuhesore', 'Sinonimi i fjales "armik" eshte:', ['mik', 'kunderpartit', 'shoke', 'bashkepunetor'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i pasur" eshte:', ['i varfer', 'i kamur', 'i lire', 'i mire'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i lehte" eshte:', ['i rende', 'i thjeshte', 'i veshtire', 'i larte'], 1),
+  q('Gjuhesore', 'Sinonimi i fjales "i guximshem" eshte:', ['i frikesuar', 'trim', 'i ngathet', 'i qete'], 1),
 
-  q('Verbale', 'Antonimi i fjales "shpejt" eshte:', ['kalueshem', 'ngadalshem', 'i thjeshte', 'fort'], 1),
-  q('Verbale', 'Antonimi i fjales "i ngrohte" eshte:', ['i lagesht', 'i thate', 'i ftohte', 'i nxehte'], 2),
-  q('Verbale', 'Antonimi i fjales "i hapur" eshte:', ['i lire', 'i mbyllur', 'i gjere', 'i drejte'], 1),
-  q('Verbale', 'Antonimi i fjales "drite" eshte:', ['hije', 'erresire', 'mjegull', 'qielli'], 1),
-  q('Verbale', 'Antonimi i fjales "i vjeter" eshte:', ['i mire', 'i ri', 'i ngrohte', 'i bukur'], 1),
-  q('Verbale', 'Antonimi i fjales "i mire" eshte:', ['i keq', 'i shkurter', 'i gjate', 'i lire'], 0),
-  q('Verbale', 'Antonimi i fjales "i larte" eshte:', ['i thelle', 'i shkurter', 'i gjate', 'i ulet'], 3),
-  q('Verbale', 'Antonimi i fjales "i forte" eshte:', ['i dobet', 'i larte', 'i ngadalte', 'i bukur'], 0),
+  q('Gjuhesore', 'Antonimi i fjales "shpejt" eshte:', ['kalueshem', 'ngadalshem', 'i thjeshte', 'fort'], 1),
+  q('Gjuhesore', 'Antonimi i fjales "i ngrohte" eshte:', ['i lagesht', 'i thate', 'i ftohte', 'i nxehte'], 2),
+  q('Gjuhesore', 'Antonimi i fjales "i hapur" eshte:', ['i lire', 'i mbyllur', 'i gjere', 'i drejte'], 1),
+  q('Gjuhesore', 'Antonimi i fjales "drite" eshte:', ['hije', 'erresire', 'mjegull', 'qielli'], 1),
+  q('Gjuhesore', 'Antonimi i fjales "i vjeter" eshte:', ['i mire', 'i ri', 'i ngrohte', 'i bukur'], 1),
+  q('Gjuhesore', 'Antonimi i fjales "i mire" eshte:', ['i keq', 'i shkurter', 'i gjate', 'i lire'], 0),
+  q('Gjuhesore', 'Antonimi i fjales "i larte" eshte:', ['i thelle', 'i shkurter', 'i gjate', 'i ulet'], 3),
+  q('Gjuhesore', 'Antonimi i fjales "i forte" eshte:', ['i dobet', 'i larte', 'i ngadalte', 'i bukur'], 0),
 
-  q('Verbale', 'I madh eshte per i vogel sic eshte i ngrohte per:', ['i lagesht', 'i thate', 'i ftohte', 'i nxehte'], 2),
-  q('Verbale', 'Mjek eshte per spital sic eshte mesues per:', ['shtepi', 'shkolle', 'park', 'biblioteke'], 1),
-  q('Verbale', 'Zog eshte per qiell sic eshte peshku per:', ['toke', 'uje', 'rere', 'pyll'], 1),
-  q('Verbale', 'Diell eshte per dite sic eshte hena per:', ['dimer', 'nate', 'pranvere', 'vere'], 1),
-  q('Verbale', 'Laps eshte per shkruajte sic eshte gerez per:', ['pres', 'presim', 'lyej', 'shko'], 1),
-  q('Verbale', 'Bareshe eshte per kope sic eshte mesues per:', ['libra', 'tabela', 'nxenes', 'rrugë'], 2),
-  q('Verbale', 'Kuzhinier eshte per restorant sic eshte gjyqtar per:', ['shtepi', 'sallon', 'gjykate', 'zyre'], 2),
+  q('Gjuhesore', 'I madh eshte per i vogel sic eshte i ngrohte per:', ['i lagesht', 'i thate', 'i ftohte', 'i nxehte'], 2),
+  q('Gjuhesore', 'Mjek eshte per spital sic eshte mesues per:', ['shtepi', 'shkolle', 'park', 'biblioteke'], 1),
+  q('Gjuhesore', 'Zog eshte per qiell sic eshte peshku per:', ['toke', 'uje', 'rere', 'pyll'], 1),
+  q('Gjuhesore', 'Diell eshte per dite sic eshte hena per:', ['dimer', 'nate', 'pranvere', 'vere'], 1),
+  q('Gjuhesore', 'Laps eshte per shkruajte sic eshte gerez per:', ['pres', 'presim', 'lyej', 'shko'], 1),
+  q('Gjuhesore', 'Bareshe eshte per kope sic eshte mesues per:', ['libra', 'tabela', 'nxenes', 'rrugë'], 2),
+  q('Gjuhesore', 'Kuzhinier eshte per restorant sic eshte gjyqtar per:', ['shtepi', 'sallon', 'gjykate', 'zyre'], 2),
 
-  q('Verbale', 'Kuptimi i fjales "trim" eshte:', ['i frikesuar', 'i guximshem', 'i ngadalte', 'i qete'], 1),
-  q('Verbale', 'Kuptimi i fjales "biografi" eshte:', [
+  q('Gjuhesore', 'Kuptimi i fjales "trim" eshte:', ['i frikesuar', 'i guximshem', 'i ngadalte', 'i qete'], 1),
+  q('Gjuhesore', 'Kuptimi i fjales "biografi" eshte:', [
     'tregim per kafshet',
     'historia e jetes se nje personi',
     'libra mesimi',
     'liste pjatash',
   ], 1),
-  q('Verbale', 'Cfare eshte nje "monolog"?', [
+  q('Gjuhesore', 'Cfare eshte nje "monolog"?', [
     'flas me dy persona',
     'flas i vetem para tjeretve',
     'kenge me grup',
     'shfaqje me shume aktore',
   ], 1),
-  q('Verbale', 'Cfare eshte nje "fjalor"?', [
+  q('Gjuhesore', 'Cfare eshte nje "fjalor"?', [
     'liber me fjale dhe kuptimet e tyre',
     'liber me poezi',
     'liber me harta',
     'liber me histori',
   ], 0),
 
-  q('Verbale', 'Cila fjale nuk i perket: trendafil, manushaqe, zambak, kompjuter?', [
+  q('Gjuhesore', 'Cila fjale nuk i perket: trendafil, manushaqe, zambak, kompjuter?', [
     'trendafil', 'manushaqe', 'zambak', 'kompjuter',
   ], 3),
-  q('Verbale', 'Cila fjale nuk i perket: e hene, e marte, mars, e premte?', [
+  q('Gjuhesore', 'Cila fjale nuk i perket: e hene, e marte, mars, e premte?', [
     'e hene', 'e marte', 'mars', 'e premte',
   ], 2),
-  q('Verbale', 'Cila fjale nuk i perket: i kuq, i gjelber, i zi, i larte?', [
+  q('Gjuhesore', 'Cila fjale nuk i perket: i kuq, i gjelber, i zi, i larte?', [
     'i kuq', 'i gjelber', 'i zi', 'i larte',
   ], 3),
 
-  q('Verbale', 'Cila eshte stina e dyte e vitit kalendar shqip (pranvera, vera, vjeshta, dimri)?', [
+  q('Gjuhesore', 'Cila eshte stina e dyte e vitit kalendar shqip (pranvera, vera, vjeshta, dimri)?', [
     'pranvera', 'vera', 'vjeshta', 'dimri',
   ], 1),
-  q('Verbale', 'Cili eshte muaji i 7-te i vitit?', [
+  q('Gjuhesore', 'Cili eshte muaji i 7-te i vitit?', [
     'qershor', 'korrik', 'gusht', 'shtator',
   ], 1),
-  q('Verbale', 'Kryeqyteti i Shqiperise eshte:', [
+  q('Gjuhesore', 'Kryeqyteti i Shqiperise eshte:', [
     'Tirana', 'Vlora', 'Shkodra', 'Durresi',
   ], 0),
 

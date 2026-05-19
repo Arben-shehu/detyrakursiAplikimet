@@ -59,6 +59,14 @@ ALTER TABLE questions ADD COLUMN IF NOT EXISTS image_svg TEXT;
 ALTER TABLE options   ADD COLUMN IF NOT EXISTS image_svg TEXT;
 ALTER TABLE attempts  ADD COLUMN IF NOT EXISTS mode VARCHAR(20) NOT NULL DEFAULT 'real';
 
+-- Riemertim i kategorise 'Verbale' -> 'Gjuhesore' (idempotent)
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM categories WHERE name = 'Verbale')
+     AND NOT EXISTS (SELECT 1 FROM categories WHERE name = 'Gjuhesore') THEN
+    UPDATE categories SET name = 'Gjuhesore' WHERE name = 'Verbale';
+  END IF;
+END $$;
+
 -- Idempotent constraints (vetem nese mungojne)
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'answers_attempt_question_unique') THEN

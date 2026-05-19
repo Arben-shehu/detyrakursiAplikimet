@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../toast/ToastContext';
 import ThemeToggle from './ThemeToggle';
 
 export default function NavBar() {
   const { user, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const [ddOpen, setDdOpen] = useState(false);
   const ddRef = useRef(null);
 
@@ -21,6 +23,7 @@ export default function NavBar() {
 
   function handleLogout() {
     logout();
+    toast.success('Dole nga llogaria');
     navigate('/login');
   }
 

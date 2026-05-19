@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../toast/ToastContext';
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,12 +17,22 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setBusy(true);
+    const infoId = toast.info('Po hyret ne llogari...');
+    const slowWarn = setTimeout(() => {
+      toast.info('Serveri po zgjohet, prit pak (~30s)...');
+    }, 4000);
     try {
-      await login(username.trim(), password);
+      const user = await login(username.trim(), password);
+      clearTimeout(slowWarn);
+      toast.dismiss(infoId);
+      toast.success(`Mire se erdhe, ${user.username}!`);
       const to = location.state?.from || '/';
       navigate(to, { replace: true });
     } catch (err) {
+      clearTimeout(slowWarn);
+      toast.dismiss(infoId);
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setBusy(false);
     }

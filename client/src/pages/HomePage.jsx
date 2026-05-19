@@ -8,7 +8,7 @@ export default function HomePage() {
       <h1>Testi IQ</h1>
       <p className="lead">
         Mire se vini ne IQ Tester &mdash; nje pyetesor i shkurter qe mat aftesite tuaja logjike,
-        matematikore dhe verbale.
+        matematikore dhe gjuhesore.
       </p>
 
       <div className="home-card">

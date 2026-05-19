@@ -11,6 +11,9 @@ export default function AdminUsersPage() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [confirmDel, setConfirmDel] = useState(null);
+  const [confirmReset, setConfirmReset] = useState(null);
+  const [resetResult, setResetResult] = useState(null);
+  const [resetting, setResetting] = useState(false);
 
   async function load() {
     try {
@@ -32,6 +35,28 @@ export default function AdminUsersPage() {
     } catch (e) {
       toast.error(e.message);
     }
+  }
+
+  async function doResetPassword() {
+    const target = confirmReset;
+    setConfirmReset(null);
+    setResetting(true);
+    try {
+      const r = await api.post(`/api/users/${target.id}/reset-password`);
+      setResetResult({ username: r.username, tempPassword: r.temp_password });
+      toast.success(`Password u resetua per "${r.username}"`);
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setResetting(false);
+    }
+  }
+
+  function copyTempPassword() {
+    if (!resetResult) return;
+    navigator.clipboard.writeText(resetResult.tempPassword)
+      .then(() => toast.success('Password i kopjuar ne clipboard'))
+      .catch(() => toast.error('Nuk u kopjua'));
   }
 
   return (
@@ -59,7 +84,15 @@ export default function AdminUsersPage() {
               <td><span className={`badge ${u.role}`}>{u.role}</span></td>
               <td>{u.attempts_count}</td>
               <td className="muted">{new Date(u.created_at).toLocaleDateString()}</td>
-              <td>
+              <td className="actions">
+                <button
+                  className="btn btn-ghost"
+                  disabled={u.id === me?.id || resetting}
+                  onClick={() => setConfirmReset(u)}
+                  title="Resetoj password-in e ketij perdoruesi"
+                >
+                  🔑 Reset
+                </button>
                 <button
                   className="btn btn-danger"
                   disabled={u.id === me?.id}
@@ -80,6 +113,34 @@ export default function AdminUsersPage() {
         onConfirm={doDelete}
         onCancel={() => setConfirmDel(null)}
       />
+
+      <Modal
+        open={!!confirmReset}
+        title="Reset password"
+        message={confirmReset ? `Te resetosh password-in per "${confirmReset.username}"? Do gjenerohet nje password i ri i perkohshem.` : ''}
+        onConfirm={doResetPassword}
+        onCancel={() => setConfirmReset(null)}
+      />
+
+      {resetResult && (
+        <div className="modal-backdrop" onClick={() => setResetResult(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">🔑 Password i ri</h3>
+            <p className="modal-msg">
+              Password u resetua per <b>{resetResult.username}</b>.
+              <br />
+              Kopjoje dhe jepia perdoruesit. <b>Nuk do shfaqet me</b> pas ketij momenti.
+            </p>
+            <div className="temp-password-box">
+              <code>{resetResult.tempPassword}</code>
+              <button className="btn" onClick={copyTempPassword}>📋 Kopjo</button>
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-primary" onClick={() => setResetResult(null)}>Mbaroi</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

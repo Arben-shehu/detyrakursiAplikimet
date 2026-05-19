@@ -23,6 +23,7 @@ export function ToastProvider({ children }) {
   const api = {
     show,
     remove,
+    dismiss: remove,
     success: (msg, d) => show(msg, 'success', d),
     error:   (msg, d) => show(msg, 'error', d),
     info:    (msg, d) => show(msg, 'info', d),

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useToast } from '../toast/ToastContext';
 
 export default function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,14 +18,25 @@ export default function RegisterPage() {
     setError('');
     if (password.length < 6) {
       setError('Password duhet te kete te pakten 6 karaktere');
+      toast.warn('Password duhet te kete te pakten 6 karaktere');
       return;
     }
     setBusy(true);
+    const infoId = toast.info('Po regjistrohet llogaria...');
+    const slowWarn = setTimeout(() => {
+      toast.info('Serveri po zgjohet, prit pak (~30s)...');
+    }, 4000);
     try {
-      await register(username.trim(), email.trim(), password);
+      const user = await register(username.trim(), email.trim(), password);
+      clearTimeout(slowWarn);
+      toast.dismiss(infoId);
+      toast.success(`Mire se erdhe, ${user.username}! Llogaria u krijua.`);
       navigate('/', { replace: true });
     } catch (err) {
+      clearTimeout(slowWarn);
+      toast.dismiss(infoId);
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setBusy(false);
     }
