@@ -22,19 +22,16 @@ export default function RegisterPage() {
       return;
     }
     setBusy(true);
-    const infoId = toast.info('Po regjistrohet llogaria...');
     const slowWarn = setTimeout(() => {
-      toast.info('Serveri po zgjohet, prit pak (~30s)...');
+      toast.info('Po lidhem me serverin, prisni pak...');
     }, 4000);
     try {
       const user = await register(username.trim(), email.trim(), password);
       clearTimeout(slowWarn);
-      toast.dismiss(infoId);
       toast.success(`Mire se erdhe, ${user.username}! Llogaria u krijua.`);
       navigate('/', { replace: true });
     } catch (err) {
       clearTimeout(slowWarn);
-      toast.dismiss(infoId);
       setError(err.message);
       toast.error(err.message);
     } finally {
