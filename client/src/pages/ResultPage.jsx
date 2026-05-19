@@ -55,7 +55,6 @@ export default function ResultPage() {
       <div className="cta-row no-print">
         <Link to={`/history/${result.attempt_id}`} className="btn">Shih pergjigjet</Link>
         <Link to="/quiz" className="btn btn-primary">Provo perseri</Link>
-        <button className="btn" onClick={handlePrint}>🖨️ Printo Certifikate</button>
         <Link to="/history" className="btn btn-ghost">Historia</Link>
       </div>
 
@@ -100,7 +99,7 @@ export default function ResultPage() {
 function verdikt(pct) {
   if (pct == null) return '';
   if (pct >= 90) return 'Shkelqyer! Performance shume e larte.';
-  if (pct >= 70) return 'Mire pune, rezultati eshte mbi mesatare.';
+  if (pct >= 70) return 'Pune e mire, rezultati eshte mbi mesatare.';
   if (pct >= 50) return 'Mire, mund te kalosh testin.';
   return 'Provo perseri me ushtrim shtese.';
 }
