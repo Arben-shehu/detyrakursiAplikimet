@@ -17,7 +17,7 @@ async function overview(req, res) {
           (SELECT MAX(score) FROM attempts WHERE finished_at IS NOT NULL) AS max_score
       `),
 
-      // Histogram skoresh ne grupe te 5 pyetjeve
+      // Histogram rezultatesh ne grupe te 5 pyetjeve
       query(`
         SELECT
           FLOOR(score::numeric / 5) * 5 AS bucket,
