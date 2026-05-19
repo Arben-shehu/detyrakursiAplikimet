@@ -178,9 +178,9 @@ const QUESTIONS = [
     'Asnje A nuk eshte C',
     'Nuk mund te dihet',
   ], 1, 3),
-  q('Logjike', 'Plotesoni: ZARI, BRESHKE, MOLLE, ... (sipas numrit te germave 4,7,5,?)', [
-    'PEMA', 'KALI', 'DIELLI', 'TRENDAFIL',
-  ], 2, 3),
+  q('Logjike', 'Plotesoni serine: 2, 4, 8, 16, 32, ?', [
+    '48', '50', '64', '128',
+  ], 2, 2),
 
   // ===================== MATEMATIKE (33) =====================
   q('Matematike', '15 + 27 = ?', ['38', '41', '42', '43'], 2),
@@ -212,8 +212,8 @@ const QUESTIONS = [
   q('Matematike', 'Mesatarja e numrave 2, 4, 6, 8, 10 eshte:', ['5', '6', '7', '8'], 1),
   q('Matematike', 'Sa minuta ka nje ore e gjysme?', ['60', '75', '90', '120'], 2),
   q('Matematike', 'Sa sekonda ka nje ore?', ['360', '3600', '6000', '36000'], 1),
-  q('Matematike', 'Nese nje rrobe kushton 80 leke me 20% ulje, cmimi origjinal ishte:', ['90', '96', '100', '120'], 2, 2),
-  q('Matematike', 'Anna ka 3 here me shume libra se Beni. Beni ka 12. Sa libra ka Anna?', ['24', '30', '36', '48'], 2),
+  q('Matematike', 'Nese nje xhakete kushton 80 leke me 20% ulje, cmimi origjinal ishte:', ['90', '96', '100', '120'], 2, 2),
+  q('Matematike', 'Ana ka 3 here me shume libra se Beni. Beni ka 12. Sa libra ka Ana?', ['24', '30', '36', '48'], 2),
   q('Matematike', 'Nje makine ben 100 km/h. Sa km ben per 2.5 ore?', ['200', '225', '250', '275'], 2),
   q('Matematike', 'Nese 3 punetore mbarojne nje pune per 6 dite, sa dite duhen 6 punetore (e njejta pune)?', ['2', '3', '4', '6'], 1, 2),
 
@@ -227,7 +227,7 @@ const QUESTIONS = [
   q('Gjuhesore', 'Sinonimi i fjales "i lehte" eshte:', ['i rende', 'i thjeshte', 'i veshtire', 'i larte'], 1),
   q('Gjuhesore', 'Sinonimi i fjales "i guximshem" eshte:', ['i frikesuar', 'trim', 'i ngathet', 'i qete'], 1),
 
-  q('Gjuhesore', 'Antonimi i fjales "shpejt" eshte:', ['kalueshem', 'ngadalshem', 'i thjeshte', 'fort'], 1),
+  q('Gjuhesore', 'Antonimi i fjales "shpejt" eshte:', ['fort', 'ngadalshem', 'i thjeshte', 'shume'], 1),
   q('Gjuhesore', 'Antonimi i fjales "i ngrohte" eshte:', ['i lagesht', 'i thate', 'i ftohte', 'i nxehte'], 2),
   q('Gjuhesore', 'Antonimi i fjales "i hapur" eshte:', ['i lire', 'i mbyllur', 'i gjere', 'i drejte'], 1),
   q('Gjuhesore', 'Antonimi i fjales "drite" eshte:', ['hije', 'erresire', 'mjegull', 'qielli'], 1),
@@ -248,7 +248,7 @@ const QUESTIONS = [
   q('Gjuhesore', 'Kuptimi i fjales "biografi" eshte:', [
     'tregim per kafshet',
     'historia e jetes se nje personi',
-    'libra mesimi',
+    'liber mesimi',
     'liste pjatash',
   ], 1),
   q('Gjuhesore', 'Cfare eshte nje "monolog"?', [
@@ -274,7 +274,7 @@ const QUESTIONS = [
     'i kuq', 'i gjelber', 'i zi', 'i larte',
   ], 3),
 
-  q('Gjuhesore', 'Cila eshte stina e dyte e vitit kalendar shqip (pranvera, vera, vjeshta, dimri)?', [
+  q('Gjuhesore', 'Cila eshte stina e dyte e vitit?', [
     'pranvera', 'vera', 'vjeshta', 'dimri',
   ], 1),
   q('Gjuhesore', 'Cili eshte muaji i 7-te i vitit?', [

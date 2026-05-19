@@ -88,7 +88,6 @@ BEGIN
     WHERE text = 'Laps eshte per shkruajte sic eshte gerez per:' LIMIT 1;
   IF qid IS NOT NULL THEN
     UPDATE questions SET text = 'Laps eshte per shkrim sic eshte gershere per:' WHERE id = qid;
-    -- Fshij opsionet e vjetra, fut te rejat
     DELETE FROM answers WHERE question_id = qid;
     DELETE FROM options WHERE question_id = qid;
     INSERT INTO options (question_id, text, is_correct) VALUES
@@ -96,6 +95,40 @@ BEGIN
       (qid, 'ngjyrosje', FALSE),
       (qid, 'shkrim',    FALSE),
       (qid, 'matje',     FALSE);
+  END IF;
+END $$;
+
+-- Rregullime te tjera tekstuale (idempotente, bazuar ne tekstin e vjeter)
+UPDATE options SET text = 'shume'
+  WHERE text = 'kalueshem';
+
+UPDATE options SET text = 'liber mesimi'
+  WHERE text = 'libra mesimi';
+
+UPDATE questions SET text = 'Cila eshte stina e dyte e vitit?'
+  WHERE text = 'Cila eshte stina e dyte e vitit kalendar shqip (pranvera, vera, vjeshta, dimri)?';
+
+UPDATE questions SET text = 'Ana ka 3 here me shume libra se Beni. Beni ka 12. Sa libra ka Ana?'
+  WHERE text = 'Anna ka 3 here me shume libra se Beni. Beni ka 12. Sa libra ka Anna?';
+
+UPDATE questions SET text = 'Nese nje xhakete kushton 80 leke me 20% ulje, cmimi origjinal ishte:'
+  WHERE text = 'Nese nje rrobe kushton 80 leke me 20% ulje, cmimi origjinal ishte:';
+
+-- Q#34: zevendeson pyetjen e konfuze ZARI/BRESHKE me sekuence te qarte
+DO $$
+DECLARE qid INT;
+BEGIN
+  SELECT id INTO qid FROM questions
+    WHERE text LIKE 'Plotesoni: ZARI, BRESHKE%' LIMIT 1;
+  IF qid IS NOT NULL THEN
+    UPDATE questions SET text = 'Plotesoni serine: 2, 4, 8, 16, 32, ?' WHERE id = qid;
+    DELETE FROM answers WHERE question_id = qid;
+    DELETE FROM options WHERE question_id = qid;
+    INSERT INTO options (question_id, text, is_correct) VALUES
+      (qid, '48',  FALSE),
+      (qid, '50',  FALSE),
+      (qid, '64',  TRUE),
+      (qid, '128', FALSE);
   END IF;
 END $$;
 
